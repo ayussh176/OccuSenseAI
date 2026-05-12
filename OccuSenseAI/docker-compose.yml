@@ -1,0 +1,120 @@
+# ============================================================
+# OccuSense AI — Docker Compose
+# ============================================================
+# Full-stack deployment: FastAPI + Redis + PostgreSQL +
+# InfluxDB + MQTT Broker (Mosquitto)
+# ============================================================
+
+version: "3.9"
+
+services:
+  # ── FastAPI Backend ──────────────────────────────────────
+  backend:
+    build:
+      context: ./ai-engine
+      dockerfile: Dockerfile
+    container_name: occusense-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./ai-engine/.env
+    environment:
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+      - INFLUX_URL=http://influxdb:8086
+      - MQTT_BROKER_HOST=mqtt
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      influxdb:
+        condition: service_started
+      mqtt:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - occusense-net
+
+  # ── PostgreSQL ───────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: occusense-postgres
+    environment:
+      POSTGRES_USER: occusense
+      POSTGRES_PASSWORD: occusense
+      POSTGRES_DB: occusense
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U occusense"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - occusense-net
+
+  # ── Redis ────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: occusense-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - occusense-net
+
+  # ── InfluxDB ─────────────────────────────────────────────
+  influxdb:
+    image: influxdb:2.7
+    container_name: occusense-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: occusense
+      DOCKER_INFLUXDB_INIT_PASSWORD: occusense123
+      DOCKER_INFLUXDB_INIT_ORG: occusense
+      DOCKER_INFLUXDB_INIT_BUCKET: sensor_data
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: my-super-secret-token
+    volumes:
+      - influx_data:/var/lib/influxdb2
+    restart: unless-stopped
+    networks:
+      - occusense-net
+
+  # ── MQTT Broker (Eclipse Mosquitto) ──────────────────────
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: occusense-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - mqtt_data:/mosquitto/data
+      - mqtt_log:/mosquitto/log
+    command: mosquitto -c /mosquitto-no-auth.conf
+    restart: unless-stopped
+    networks:
+      - occusense-net
+
+volumes:
+  postgres_data:
+  redis_data:
+  influx_data:
+  mqtt_data:
+  mqtt_log:
+
+networks:
+  occusense-net:
+    driver: bridge

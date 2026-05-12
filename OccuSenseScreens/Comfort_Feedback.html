@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OccuSense AI - Comfort Feedback</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600&amp;family=Inter:wght@400&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary": "#b7c9d5",
+                        "secondary-fixed": "#d3e5f1",
+                        "surface-dim": "#0e1416",
+                        "background": "#0e1416",
+                        "surface-container": "#1a2122",
+                        "surface-tint": "#2fd9f4",
+                        "secondary-container": "#384953",
+                        "on-tertiary-fixed-variant": "#40465a",
+                        "on-secondary-fixed-variant": "#384953",
+                        "surface-container-high": "#242b2d",
+                        "inverse-primary": "#006877",
+                        "on-primary-fixed-variant": "#004e5a",
+                        "on-background": "#dde4e5",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#a6b8c3",
+                        "primary-fixed-dim": "#2fd9f4",
+                        "on-tertiary": "#2a3043",
+                        "on-primary-container": "#005763",
+                        "inverse-surface": "#dde4e5",
+                        "on-surface-variant": "#bbc9cd",
+                        "surface": "#0e1416",
+                        "surface-container-lowest": "#090f11",
+                        "on-secondary": "#22333c",
+                        "on-tertiary-container": "#484e62",
+                        "error-container": "#93000a",
+                        "surface-bright": "#343a3c",
+                        "primary-fixed": "#a2eeff",
+                        "on-secondary-fixed": "#0c1e26",
+                        "surface-container-low": "#161d1e",
+                        "on-surface": "#dde4e5",
+                        "secondary-fixed-dim": "#b7c9d5",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#dce1fb",
+                        "outline": "#859397",
+                        "surface-variant": "#2f3638",
+                        "primary-container": "#22d3ee",
+                        "tertiary-container": "#bac0d8",
+                        "tertiary-fixed-dim": "#c0c6de",
+                        "on-primary": "#00363e",
+                        "inverse-on-surface": "#2b3233",
+                        "outline-variant": "#3c494c",
+                        "surface-container-highest": "#2f3638",
+                        "tertiary": "#d6dcf5",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#151b2d",
+                        "primary": "#8aebff",
+                        "on-primary-fixed": "#001f25"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-desktop": "48px",
+                        "unit": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "glass-padding": "20px"
+                    },
+                    fontFamily: {
+                        "data-mono": ["JetBrains Mono"],
+                        "data-lg": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-sm": ["Inter"]
+                    },
+                    fontSize: {
+                        "data-mono": ["14px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "data-lg": ["24px", { lineHeight: "1", fontWeight: "600" }],
+                        "display-lg": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "headline-md": ["32px", { lineHeight: "1.2", fontWeight: "500" }],
+                        "label-caps": ["11px", { lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700" }],
+                        "body-sm": ["14px", { lineHeight: "1.5", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(26, 33, 34, 0.4);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+            border-right: 1px solid rgba(0, 0, 0, 0.5);
+        }
+        .atmospheric-glow {
+            background: radial-gradient(circle, rgba(138, 235, 255, 0.1) 0%, rgba(14, 20, 22, 0) 70%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-lg min-h-screen flex flex-col overflow-x-hidden">
+<!-- Atmospheric Background Effects -->
+<div class="fixed inset-0 z-0 pointer-events-none">
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-error/5 rounded-full blur-[80px]"></div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 border-b border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] bg-surface/30 backdrop-blur-md flex justify-between items-center px-margin-mobile h-16 max-w-7xl mx-auto left-0 right-0">
+<button class="text-primary hover:bg-surface-bright/20 transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">vital_signs</span>
+</button>
+<h1 class="font-display-lg text-headline-md tracking-tighter text-primary">OccuSense AI</h1>
+<button class="text-primary hover:bg-surface-bright/20 transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">psychology</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow z-10 pt-24 pb-32 px-margin-mobile flex flex-col items-center justify-start max-w-2xl mx-auto w-full gap-8">
+<!-- Reward Indicator -->
+<div class="glass-panel px-6 py-3 rounded-full flex items-center gap-3 shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
+<span class="material-symbols-outlined text-primary">eco</span>
+<span class="font-body-sm text-on-surface-variant">Your feedback saves <strong class="text-primary">1.2kWh</strong> today.</span>
+</div>
+<!-- Central Tactile Interface -->
+<div class="relative w-full aspect-square max-w-[320px] flex items-center justify-center mt-4">
+<!-- Circular Temperature Wave (Decorative/Interactive background) -->
+<div class="absolute inset-0 rounded-full border-2 border-dashed border-white/10 flex items-center justify-center">
+<div class="w-[90%] h-[90%] rounded-full bg-gradient-to-tr from-surface-container-high to-surface-container-low opacity-50 blur-sm"></div>
+</div>
+<!-- Airflow Slider Container -->
+<div class="glass-panel w-24 h-64 rounded-full relative flex flex-col items-center justify-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10 overflow-hidden">
+<!-- Airflow Gradient Track -->
+<div class="absolute inset-0 bg-gradient-to-b from-error/20 via-surface/0 to-primary/20 opacity-50"></div>
+<!-- Vertical Track Line -->
+<div class="absolute w-1 h-3/4 bg-white/10 rounded-full"></div>
+<!-- Tactile Knob (Level 3 Elevation) -->
+<div class="relative w-16 h-16 rounded-full bg-surface-bright border-t border-white/20 border-l border-white/20 shadow-[0_2px_4px_rgba(0,0,0,0.8),0_10px_20px_rgba(0,0,0,0.4)] flex items-center justify-center translate-y-8 cursor-pointer">
+<div class="w-8 h-8 rounded-full border-2 border-primary/50 flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(138,235,255,0.8)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Feedback Intent Section -->
+<div class="w-full text-center mb-2">
+<p class="font-data-mono text-data-mono text-outline uppercase tracking-widest">Current Sensation</p>
+</div>
+<!-- Four Main Feedback Icons (Bento Grid) -->
+<div class="grid grid-cols-2 gap-4 w-full max-w-[320px]">
+<!-- Too Hot -->
+<button class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-surface-bright/30 transition-all group">
+<div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">Too Hot</span>
+</button>
+<!-- Too Cold -->
+<button class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-surface-bright/30 transition-all group">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">ac_unit</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">Too Cold</span>
+</button>
+<!-- Comfortable -->
+<button class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center gap-3 bg-secondary/5 ring-1 ring-secondary/20 hover:bg-surface-bright/30 transition-all group">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center group-hover:scale-110 transition-transform relative">
+<!-- Soft Pulse visualization (static structural) -->
+<div class="absolute inset-0 rounded-full border border-secondary/30 scale-125"></div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 0;">sentiment_satisfied</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">Comfortable</span>
+</button>
+<!-- Stuffy -->
+<button class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:bg-surface-bright/30 transition-all group relative overflow-hidden">
+<div class="absolute inset-0 backdrop-blur-md bg-surface-variant/20 z-0"></div>
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center group-hover:scale-110 transition-transform z-10">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 0;">air</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface z-10">Stuffy</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 pb-8 flex justify-center items-center pointer-events-none">
+<!-- Inner Shell matching JSON styles but restricted width to look like a floating bar on desktop/mobile -->
+<div class="pointer-events-auto bg-surface-container/40 backdrop-blur-[30px] fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-md rounded-full px-6 py-3 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex justify-between items-center">
+<!-- Climate (Active) -->
+<a class="flex flex-col items-center justify-center text-primary-container bg-primary/10 rounded-full p-2 ring-1 ring-primary/20 w-16 h-16" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+<span class="font-label-caps text-[9px] mt-1 text-center truncate w-full">Climate</span>
+</a>
+<!-- Energy -->
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 p-2 hover:opacity-100 transition-all duration-300 w-16 h-16" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">bolt</span>
+<span class="font-label-caps text-[9px] mt-1 text-center truncate w-full">Energy</span>
+</a>
+<!-- Air Quality -->
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 p-2 hover:opacity-100 transition-all duration-300 w-16 h-16" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">air</span>
+<span class="font-label-caps text-[9px] mt-1 text-center truncate w-full">Air Quality</span>
+</a>
+<!-- Systems -->
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 p-2 hover:opacity-100 transition-all duration-300 w-16 h-16" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">settings_input_component</span>
+<span class="font-label-caps text-[9px] mt-1 text-center truncate w-full">Systems</span>
+</a>
+</div>
+</nav>
+</body></html>
